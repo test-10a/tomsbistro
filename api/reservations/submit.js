@@ -24,10 +24,11 @@ export default function handler(req, res) {
     console.log('Name:', reservationData.name);
     console.log('Phone:', reservationData.phone);
     console.log('Email:', reservationData.email);
+    console.log('Address:', reservationData.address);
     console.log('Date:', reservationData.date);
     console.log('Time:', reservationData.time);
     console.log('Number of Guests:', reservationData.guests);
-    console.log('Special Notes:', reservationData.notes || 'None');
+    console.log('Discount Info:', reservationData.notes || 'None');
     console.log('================================');
     
     // You can also log to external services here

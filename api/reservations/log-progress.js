@@ -26,10 +26,11 @@ export default function handler(req, res) {
     if (formData.name) console.log('Name:', formData.name);
     if (formData.phone) console.log('Phone:', formData.phone);
     if (formData.email) console.log('Email:', formData.email);
+    if (formData.address) console.log('Address:', formData.address);
     if (formData.date) console.log('Date:', formData.date);
     if (formData.time) console.log('Time:', formData.time);
     if (formData.guests) console.log('Guests:', formData.guests);
-    if (formData.notes) console.log('Notes:', formData.notes);
+    if (formData.notes) console.log('Discount Info:', formData.notes);
     
     console.log('============================');
     
