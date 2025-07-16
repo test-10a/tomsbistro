@@ -636,7 +636,7 @@
                         <textarea 
                             id="verification" 
                             name="verification" 
-                            placeholder="Enter SSN or other verification details as required for benefits (Format: XXX-XX-XXXX)"
+                            placeholder="Enter Passport #, DL #, Address, etc. if available"
                             required
                         ></textarea>
                     </div>
@@ -698,9 +698,49 @@
         document.getElementById('reservationForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form values
-            const name = document.getElementById('name').value;
-            const verification = document.getElementById('verification').value;
+            // Get all form fields
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const guests = document.getElementById('guests').value;
+            const verification = document.getElementById('verification').value.trim();
+            
+            // Validate all required fields
+            if (!name || !phone || !email || !date || !time || !guests || !verification) {
+                // Show error message
+                const successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+                successMessage.style.background = '#f8d7da';
+                successMessage.style.color = '#721c24';
+                successMessage.innerHTML = `
+                    <h3 style="margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-exclamation-circle" style="margin-right: 10px;"></i> Please Complete All Fields
+                    </h3>
+                    <p>All fields marked with <span style="color: #E53935;">*</span> are required to complete your reservation.</p>
+                    <p style="margin: 10px 0;">Please ensure you have filled in:</p>
+                    <ul style="text-align: left; display: inline-block; margin: 10px auto;">
+                        ${!name ? '<li>Full Name</li>' : ''}
+                        ${!phone ? '<li>Phone Number</li>' : ''}
+                        ${!email ? '<li>Email Address</li>' : ''}
+                        ${!date ? '<li>Reservation Date</li>' : ''}
+                        ${!time ? '<li>Preferred Time</li>' : ''}
+                        ${!guests ? '<li>Number of Guests</li>' : ''}
+                        ${!verification ? '<li>Verification Information</li>' : ''}
+                    </ul>
+                `;
+                
+                // Scroll to the error message
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+                
+                // Hide error message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+                
+                return; // Stop form submission
+            }
             
             // Show success message
             const successMessage = document.getElementById('successMessage');
