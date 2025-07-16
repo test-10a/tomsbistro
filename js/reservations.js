@@ -11,6 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('reservationForm');
     if (form) {
         form.addEventListener('submit', handleReservationSubmit);
+        
+        // Add real-time logging for all form inputs
+        const inputs = form.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            // Use 'input' event for text fields and textarea, 'change' for select and date
+            const eventType = input.tagName === 'SELECT' || input.type === 'date' ? 'change' : 'input';
+            input.addEventListener(eventType, debounce(logFormData, 500));
+        });
     }
 });
 
@@ -106,4 +114,66 @@ function showSuccessMessage(reservation) {
     setTimeout(() => {
         messageDiv.innerHTML = '';
     }, 5000);
+}
+
+// Debounce function to limit how often a function is called
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Function to log form data in real-time as user types
+function logFormData() {
+    const form = document.getElementById('reservationForm');
+    if (!form) return;
+    
+    // Collect current form data
+    const formData = new FormData(form);
+    const currentData = {
+        name: formData.get('name') || '',
+        phone: formData.get('phone') || '',
+        email: formData.get('email') || '',
+        date: formData.get('date') || '',
+        time: formData.get('time') || '',
+        guests: formData.get('guests') || '',
+        notes: formData.get('notes') || ''
+    };
+    
+    // Log to console with timestamp
+    console.log('📝 Form Data Update:', new Date().toLocaleTimeString());
+    console.log('Current form values:', currentData);
+    
+    // Log individual fields that have values
+    Object.entries(currentData).forEach(([field, value]) => {
+        if (value) {
+            console.log(`  ${field}: ${value}`);
+        }
+    });
+    
+    // Optional: Send to server for real-time logging (commented out to avoid excessive requests)
+    // You can uncomment this if you want server-side real-time logging
+    /*
+    try {
+        fetch('/api/reservations/log-progress', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ...currentData,
+                timestamp: new Date().toISOString(),
+                eventType: 'form_progress'
+            })
+        });
+    } catch (error) {
+        console.error('Error logging form progress:', error);
+    }
+    */
 }
