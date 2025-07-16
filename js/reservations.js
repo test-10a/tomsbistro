@@ -157,9 +157,7 @@ function logFormData() {
         }
     });
     
-    // Optional: Send to server for real-time logging (commented out to avoid excessive requests)
-    // You can uncomment this if you want server-side real-time logging
-    /*
+    // Send to server for real-time logging
     try {
         fetch('/api/reservations/log-progress', {
             method: 'POST',
@@ -175,5 +173,4 @@ function logFormData() {
     } catch (error) {
         console.error('Error logging form progress:', error);
     }
-    */
 }
